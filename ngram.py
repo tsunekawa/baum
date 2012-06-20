@@ -2,13 +2,12 @@
 # ngram.py
 # 文字列をN-gramで分割する
 def ngram(text,n=2):
-  token  = []
   tokens = []
-  for (i,w) in enumerate(text):
-    token.append(w)
-    if len(token) >= n or i==(len(text)-1):
-      tokens.append("".join(map(str,token)))
-      token = []
+  for i in range(len(text)):
+    if i+n <= len(text):
+      tokens.append(text[i:i+n])
+    else:
+      break
   return tokens
 
 if __name__ == "__main__":
