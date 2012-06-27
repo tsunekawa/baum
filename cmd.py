@@ -1,26 +1,40 @@
 #-*- coding:utf-8 -*-
 import os
+import extract,freq
 
 # コマンド実行時に最初に実行されるメソッド
 def cmd(args,options={}):
-  dirpath = options.directory
+  dirpath = options.inputs
   list = os.listdir(dirpath)
+  file_phrases = []
+  result = []
 
   # すべてのファイルに対して集計処理を行う
   for filename in list:
     print "(((" + filename + ")))"
     print ""
-    print extract.extract(filename)
+    # 本文の抽出
+    content = extract.extract(os.path.join(dirpath,filename))
+    phrases = []
+    # フレーズの抽出と集計
+    for sentence in content['body']:
+      phrases += map((lambda x: " ".join(x)),extract.make_phrase(sentence,5))
+      tally = freq.freq_tally(phrases).items()
+      result = result + tally
 
   # 集計結果を出力する
+  return result
 
 if __name__ == "__main__":
   import sys
   from optparse import OptionParser
   parser = OptionParser()
-  parser.add_option("-d", "--directory", dest="directory",
+  parser.add_option("-i", "--input", dest="inputs",
                     help="read xmlfiles in DIRECTORY as journal documents",
                     metavar="DIRECTORY")
 
   (options, args) = parser.parse_args()
-  cmd(args, options=options)
+  result = cmd(args, options=options)
+
+  for item in result:
+    print item
