@@ -1,2 +1,2 @@
-import ngram from ngram
-import nlist from nlist
+from ngram import ngram
+from nlist import nlist
