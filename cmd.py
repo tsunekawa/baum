@@ -1,3 +1,4 @@
+#!/usr/env python
 #-*- coding:utf-8 -*-
 import os
 import extract,freq
@@ -34,8 +35,8 @@ if __name__ == "__main__":
                     metavar="DIRECTORY")
 
   (options, args) = parser.parse_args()
-  result = cmd(args, options=options)
+  result = sorted(cmd(args, options=options), key=lambda x:int(x[1]), reverse=True)
 
   for item in result:
     if item[1]>=3:
-      print item
+      print item[0]+" : "+str(item[1])
