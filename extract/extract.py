@@ -17,4 +17,4 @@ def extract(filename):
   return results
 
 if __name__ == "__main__":
-   print extract("pmc_sample.xml")
+   print extract("../test/samples/pmc_sample.xml")
