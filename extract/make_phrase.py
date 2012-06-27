@@ -13,4 +13,4 @@ def make_phrase(sentence,n):
   return result
 
 if __name__ == "__main__":
-   print make_phrase("t,his is .pmc.sample.xml",2)
+   print make_phrase("t,his is .pmc.sample.xml",8)
