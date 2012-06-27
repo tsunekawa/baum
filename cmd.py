@@ -37,4 +37,5 @@ if __name__ == "__main__":
   result = cmd(args, options=options)
 
   for item in result:
-    print item
+    if item[1]>=3:
+      print item
