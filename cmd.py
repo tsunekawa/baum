@@ -7,21 +7,18 @@ import extract,freq
 def cmd(args,options={}):
   dirpath = options.inputs
   list = os.listdir(dirpath)
-  file_phrases = []
-  result = []
+  result = {}
+  phrases = []
 
   # すべてのファイルに対して集計処理を行う
   for filename in list:
-    print "(((" + filename + ")))"
-    print ""
     # 本文の抽出
     content = extract.extract(os.path.join(dirpath,filename))
-    phrases = []
     # フレーズの抽出と集計
     for sentence in content['body']:
       phrases += map((lambda x: " ".join(x)),extract.make_phrase(sentence,5))
-      tally = freq.freq_tally(phrases).items()
-      result = result + tally
+
+  result = freq.freq_tally(phrases).items()
 
   # 集計結果を出力する
   return result
@@ -38,4 +35,5 @@ if __name__ == "__main__":
   result = sorted(cmd(args, options=options), key=lambda x:int(x[1]), reverse=True)
 
   for item in result:
-    print item[0]+" : "+str(item[1])
+    if item[1]>=2:
+      print item[0]+" : "+str(item[1])
