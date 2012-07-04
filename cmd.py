@@ -35,5 +35,5 @@ if __name__ == "__main__":
   result = sorted(cmd(args, options=options), key=lambda x:int(x[1]), reverse=True)
 
   for item in result:
-    if item[1]>=2:
+    if item[1]>=4:
       print item[0]+" : "+str(item[1])
