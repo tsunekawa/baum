@@ -20,7 +20,6 @@ def flat(directryname,n,t):
       phrases += map((lambda x: " ".join(x)),extract.make_phrase(sentence,n))
 
   result = freq.freq_tally(phrases).items()
-  result = sorted(result, key=lambda x:int(x[1]), reverse=True)
 
   re={}
 
