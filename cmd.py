@@ -9,6 +9,9 @@ parser = OptionParser()
 parser.add_option("-i", "--input", dest="inputs",
 		  help="read xmlfiles in DIRECTORY as journal documents",
 		  metavar="DIRECTORY")
+parser.add_option("-o", "--output", dest="output",
+		  help="write result into OUTPUT file",
+		  metavar="OUTPUT")
 parser.add_option("-n", "--numterms", dest="n",
 		  help="set number of terms",
 		  metavar="NUMBER")
@@ -19,10 +22,14 @@ parser.add_option("-t", "--threshold", dest="t",
 (options, args) = parser.parse_args()
 
 dirpath = options.inputs
+output  = options.output
 number = int(options.n)
 list = os.listdir(dirpath)
 result = {}
 phrases = []
+
+if(output):
+  sys.stdout = open(output, 'w')
 
 # すべてのファイルに対して集計処理を行う
 for filename in list:
