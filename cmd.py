@@ -3,24 +3,26 @@
 import os
 import extract,freq
 
-# ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œæ™‚ã«æœ€åˆã«å®Ÿè¡Œã•ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+# ƒRƒ}ƒ“ƒhÀs‚ÉÅ‰‚ÉÀs‚³‚ê‚éƒƒ\ƒbƒh
 def cmd(args,options={}):
   dirpath = options.inputs
+  number = int(options.n)
   list = os.listdir(dirpath)
   result = {}
   phrases = []
 
-  # ã™ã¹ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾ã—ã¦é›†è¨ˆå‡¦ç†ã‚’è¡Œã†
+
+  # ‚·‚×‚Ä‚Ìƒtƒ@ƒCƒ‹‚É‘Î‚µ‚ÄWŒvˆ—‚ğs‚¤
   for filename in list:
-    # æœ¬æ–‡ã®æŠ½å‡º
+    # –{•¶‚Ì’Šo
     content = extract.extract(os.path.join(dirpath,filename))
-    # ãƒ•ãƒ¬ãƒ¼ã‚ºã®æŠ½å‡ºã¨é›†è¨ˆ
+    # ƒtƒŒ[ƒY‚Ì’Šo‚ÆWŒv
     for sentence in content['body']:
-      phrases += map((lambda x: " ".join(x)),extract.make_phrase(sentence,5))
+      phrases += map((lambda x: " ".join(x)),extract.make_phrase(sentence,number))
 
   result = freq.freq_tally(phrases).items()
 
-  # é›†è¨ˆçµæœã‚’å‡ºåŠ›ã™ã‚‹
+  # WŒvŒ‹‰Ê‚ğo—Í‚·‚é
   return result
 
 if __name__ == "__main__":
@@ -30,10 +32,18 @@ if __name__ == "__main__":
   parser.add_option("-i", "--input", dest="inputs",
                     help="read xmlfiles in DIRECTORY as journal documents",
                     metavar="DIRECTORY")
+  parser.add_option("-n", "--numterms", dest="n",
+                    help="set number of terms",
+                    metavar="NUMBER")
+  parser.add_option("-t", "--threshold", dest="t",
+                    help="set threshold of counting",
+                    metavar="THRESHOLD")
 
   (options, args) = parser.parse_args()
   result = sorted(cmd(args, options=options), key=lambda x:int(x[1]), reverse=True)
 
+  threshold = int(options.t)
+
   for item in result:
-    if item[1]>=4:
+    if item[1]>=threshold:
       print item[0]+" : "+str(item[1])
