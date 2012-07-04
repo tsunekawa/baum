@@ -3,7 +3,7 @@
 import os
 import extract,freq
 
-# ƒRƒ}ƒ“ƒhÀs‚ÉÅ‰‚ÉÀs‚³‚ê‚éƒƒ\ƒbƒh
+# ã‚³ãƒãƒ³ãƒ‰å®Ÿè¡Œæ™‚ã«æœ€åˆã«å®Ÿè¡Œã•ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
 def cmd(args,options={}):
   dirpath = options.inputs
   number = int(options.n)
@@ -12,17 +12,17 @@ def cmd(args,options={}):
   phrases = []
 
 
-  # ‚·‚×‚Ä‚Ìƒtƒ@ƒCƒ‹‚É‘Î‚µ‚ÄWŒvˆ—‚ğs‚¤
+  # ã™ã¹ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾ã—ã¦é›†è¨ˆå‡¦ç†ã‚’è¡Œã†
   for filename in list:
-    # –{•¶‚Ì’Šo
+    # æœ¬æ–‡ã®æŠ½å‡º
     content = extract.extract(os.path.join(dirpath,filename))
-    # ƒtƒŒ[ƒY‚Ì’Šo‚ÆWŒv
+    # ãƒ•ãƒ¬ãƒ¼ã‚ºã®æŠ½å‡ºã¨é›†è¨ˆ
     for sentence in content['body']:
       phrases += map((lambda x: " ".join(x)),extract.make_phrase(sentence,number))
 
   result = freq.freq_tally(phrases).items()
 
-  # WŒvŒ‹‰Ê‚ğo—Í‚·‚é
+  # é›†è¨ˆçµæœã‚’å‡ºåŠ›ã™ã‚‹
   return result
 
 if __name__ == "__main__":
