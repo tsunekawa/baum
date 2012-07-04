@@ -9,6 +9,9 @@ parser = OptionParser()
 parser.add_option("-i", "--input", dest="inputs",
 		  help="read xmlfiles in DIRECTORY as journal documents",
 		  metavar="DIRECTORY")
+parser.add_option("-o", "--output", dest="output",
+		  help="write result into OUTPUT file",
+		  metavar="OUTPUT")
 parser.add_option("-n", "--numterms", dest="n",
 		  help="set number of terms",
 		  metavar="NUMBER")
@@ -19,16 +22,20 @@ parser.add_option("-t", "--threshold", dest="t",
 (options, args) = parser.parse_args()
 
 dirpath = options.inputs
+output  = options.output
 number = int(options.n)
 list = os.listdir(dirpath)
 result = {}
 phrases = []
 
-# ‚·‚×‚Ä‚Ìƒtƒ@ƒCƒ‹‚É‘Î‚µ‚ÄWŒvˆ—‚ğs‚¤
+if(output):
+  sys.stdout = open(output, 'w')
+
+# ã™ã¹ã¦ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«å¯¾ã—ã¦é›†è¨ˆå‡¦ç†ã‚’è¡Œã†
 for filename in list:
-  # –{•¶‚Ì’Šo
+  # æœ¬æ–‡ã®æŠ½å‡º
   content = extract.extract(os.path.join(dirpath,filename))
-  # ƒtƒŒ[ƒY‚Ì’Šo‚ÆWŒv
+  # ãƒ•ãƒ¬ãƒ¼ã‚ºã®æŠ½å‡ºã¨é›†è¨ˆ
   for sentence in content['body']:
     phrases += map((lambda x: " ".join(x)),extract.make_phrase(sentence,number))
 
