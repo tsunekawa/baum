@@ -1,7 +1,7 @@
 #!/usr/env python
 #-*- coding:utf-8 -*-
 import os
-import extract,freq
+import extract,freq,operation
 import sys
 from optparse import OptionParser
 
@@ -19,7 +19,21 @@ parser.add_option("-t", "--threshold", dest="t",
 		  help="set threshold of counting",
 		  metavar="THRESHOLD")
 
+parser.add_option("-F", "--flat",
+                  action="store_const", const="flat", dest="mode",
+		  help="switch flat mode",
+		  metavar="FLATMODE")
+parser.add_option("-H", "--hierarchical",
+                  action="store_const", const="hierarchical", dest="mode",
+		  help="switch hierarchical mode",
+		  metavar="HIERMODE")
+
 (options, args) = parser.parse_args()
+
+# モードの指定
+mode = options.mode
+if !mode:
+  mode = "flat"
 
 dirpath = options.inputs
 output  = options.output
@@ -42,8 +56,15 @@ for filename in list:
 result = freq.freq_tally(phrases).items()
 result = sorted(result, key=lambda x:int(x[1]), reverse=True)
 
+if mode=="flat":
+  result = operation.flat(dirpath)
+elif mode=="hierachical"
+  result = operation.hierachical(dirpath)
+else
+  raise 'mode should be flat or hierachical'
+
 threshold = int(options.t)
 
 for item in result:
   if item[1]>=threshold:
-    print item[0]+" : "+str(item[1])
+    print item[0]+" : "+str(item[1]["count"])
