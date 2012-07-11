@@ -1,7 +1,8 @@
 #!/usr/env python
 #-*- coding:utf-8 -*-
+
 import os
-import extract,freq
+import extract,freq,operation
 import sys
 from optparse import OptionParser
 
@@ -19,31 +20,37 @@ parser.add_option("-t", "--threshold", dest="t",
 		  help="set threshold of counting",
 		  metavar="THRESHOLD")
 
+parser.add_option("-F", "--flat",
+                  action="store_const", const="flat", dest="mode",
+		  help="switch flat mode",
+		  metavar="FLATMODE")
+parser.add_option("-H", "--hierarchical",
+                  action="store_const", const="hierarchical", dest="mode",
+		  help="switch hierarchical mode",
+		  metavar="HIERMODE")
+
 (options, args) = parser.parse_args()
 
+# モードの指定
+mode = options.mode
 dirpath = options.inputs
 output  = options.output
 number = int(options.n)
-list = os.listdir(dirpath)
+threshold = int(options.t)
 result = {}
-phrases = []
 
 if(output):
   sys.stdout = open(output, 'w')
 
-# すべてのファイルに対して集計処理を行う
-for filename in list:
-  # 本文の抽出
-  content = extract.extract(os.path.join(dirpath,filename))
-  # フレーズの抽出と集計
-  for sentence in content['body']:
-    phrases += map((lambda x: " ".join(x)),extract.make_phrase(sentence,number))
+if mode=="flat":
+  result = operation.flat(dirpath, number, threshold)
+elif mode=="hierachical":
+  # result = operation.hierachical(dirpath, number, threshold)
+  pass
+else:
+  raise 'mode should be flat or hierachical'
 
-result = freq.freq_tally(phrases).items()
-result = sorted(result, key=lambda x:int(x[1]), reverse=True)
-
-threshold = int(options.t)
-
+# 結果をソートして表示
+result = sorted(result.items(), key=lambda x:int(x[1]["count"]), reverse=True)
 for item in result:
-  if item[1]>=threshold:
-    print item[0]+" : "+str(item[1])
+  print item[0]+" : "+str(item[1]["count"])
