@@ -15,7 +15,7 @@ def getchild(root, level):
 
 if __name__ == "__main__":
 
-	dom = xml.dom.minidom.parse("pmc_sample.xml")
+	dom = xml.dom.minidom.parse("samples/Asia_Pac_Allergy/Asia_Pac_Allergy_2011_Oct_11_1(3)_145-151.nxml")
 #	print dom.documentElement.tagName
 	getchild(dom.documentElement, 0)
 
